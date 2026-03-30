@@ -1,0 +1,26 @@
+$bg-clr: rgba(249, 61, 61, 0.1);
+$bg-shadow-clr: rgba(224, 65, 65, 0.5);
+$transition: all .5s ease;
+
+// #region anime
+$detail-content-down-anime-time: 0.3s;
+$detail-content-down-anime-delay-weight: .1s;
+
+@mixin detail-content-down() {
+  opacity: 0;
+  animation: detail-content-down $detail-content-down-anime-time ease forwards;
+}
+
+@keyframes detail-content-down {
+  from {
+    translate: 0 -2rem;
+    opacity: 0;
+  }
+
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+// #endregion anime

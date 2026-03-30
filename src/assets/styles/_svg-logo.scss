@@ -1,0 +1,15 @@
+@mixin origin-and-hover-clr($clr-origin, $clr-hover) {
+  *:not(rect) {
+    fill: $clr-origin;
+  }
+
+  &:hover > *:not(rect) {
+    fill: $clr-hover;
+  }
+}
+
+@mixin font-size($size) {
+  *:not(rect) {
+    font-size: $size;
+  }
+}

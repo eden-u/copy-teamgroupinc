@@ -1,0 +1,14 @@
+@mixin mixun-text-clr-hover($outer-selector, $original-clr, $clr-hover) {
+  #{$outer-selector} {
+    color: $original-clr;
+
+    &:hover {
+      color: $clr-hover;
+    }
+
+    & > * {
+      color: inherit;
+      cursor: pointer;
+    }
+  }
+}

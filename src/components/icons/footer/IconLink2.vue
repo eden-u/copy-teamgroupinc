@@ -1,0 +1,15 @@
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+    <!-- Icon from Famicons by Family - https://github.com/familyjs/famicons/blob/main/LICENSE -->
+    <path
+      fill="currentColor"
+      d="M480 265H232v179l248 36zm-264 0H32v150l184 26.7zM480 32L232 67.4V249h248zM216 69.7L32 96v153h184z"
+    />
+  </svg>
+</template>
+
+<script>
+export default {
+  name: 'FamiconsLogoWindows',
+}
+</script>

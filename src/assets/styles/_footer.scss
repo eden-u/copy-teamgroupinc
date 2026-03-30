@@ -1,0 +1,49 @@
+// #region footer padding
+$small-padding: .5rem;
+$big-padding: 1.5rem;
+// #endregion footer padding
+
+// #region nav active time
+$nav-active-time: .5s;
+// #endregion nav active time
+
+// #region fade in anime
+$footer-anime-time: 0.5s;
+
+@mixin fade-in-left() {
+  animation: fade-in-left $footer-anime-time ease;
+}
+
+@keyframes fade-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+$fade-in-right-anime-time: .3s;
+$fade-in-right-anime-delay-weight: .2s;
+
+@mixin fade-in-right() {
+  opacity: 0;
+  animation: fade-in-right $fade-in-right-anime-time linear forwards;
+}
+
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// #endregion fade in anime
