@@ -2,7 +2,7 @@
 import infoUrl from '@/assets/images/main/Info.jpg?url'
 import InfoCards from './InfoCards.vue'
 import InfoSplitWnd from './InfoSplitWnd.vue'
-import Advert from './Advert.vue'
+import InfoAdvertVideo from './InfoAdvertVideo.vue'
 </script>
 
 <template>
@@ -26,7 +26,7 @@ import Advert from './Advert.vue'
 
     <InfoSplitWnd />
 
-    <Advert />
+    <InfoAdvertVideo />
   </div>
 </template>
 
