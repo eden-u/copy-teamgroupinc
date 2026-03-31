@@ -1,7 +1,7 @@
 <script setup>
 import infoUrl from '@/assets/images/main/Info.jpg?url'
 import InfoCards from './InfoCards.vue'
-import SplitWnd2 from './SplitWnd2.vue'
+import InfoSplitWnd from './InfoSplitWnd.vue'
 import Advert from './Advert.vue'
 </script>
 
@@ -24,7 +24,7 @@ import Advert from './Advert.vue'
       <InfoCards />
     </div>
 
-    <SplitWnd2 />
+    <InfoSplitWnd />
 
     <Advert />
   </div>

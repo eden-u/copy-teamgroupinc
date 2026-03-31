@@ -45,12 +45,12 @@ $text-clr-hover: white;
 }
 
 .left-wnd {
-  background-image: url('/src/assets/images/main/SplitWnd2-1.jpg');
+  background-image: url('/src/assets/images/main/info-split-wnd-1.jpg');
   @include bg-img.full-and-at-center();
 }
 
 .right-wnd {
-  background-image: url('/src/assets/images/main/SplitWnd2-2.jpg');
+  background-image: url('/src/assets/images/main/info-split-wnd-2.jpg');
   @include bg-img.full-and-at-center();
 }
 // #endregion split box
