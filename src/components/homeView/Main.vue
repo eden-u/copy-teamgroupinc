@@ -1,6 +1,6 @@
 <script setup>
 import Hero from './main/Hero.vue'
-import SplitWnd1 from './main/SplitWnd1.vue'
+import MainSplitWnd from './main/MainSplitWnd.vue'
 import Info from './main/Info.vue'
 import Carousel from './main/Carousel.vue'
 </script>
@@ -9,7 +9,7 @@ import Carousel from './main/Carousel.vue'
   <div class="main-component">
     <Hero />
 
-    <SplitWnd1 />
+    <MainSplitWnd />
 
     <Info />
 

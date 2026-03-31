@@ -1,6 +1,6 @@
 <script setup>
-import imgUrl_1 from '@/assets/images/main/SplitWnd1-1.jpg?url'
-import imgUrl_2 from '@/assets/images/main/SplitWnd1-2.jpg?url'
+import imgUrl_1 from '@/assets/images/main/main-split-wnd-1.jpg?url'
+import imgUrl_2 from '@/assets/images/main/main-split-wnd-2.jpg?url'
 </script>
 
 <template>
