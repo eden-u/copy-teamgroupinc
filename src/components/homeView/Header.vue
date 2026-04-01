@@ -39,7 +39,6 @@ window.addEventListener('scroll', changeBigHeaderStyle)
 @use '@/assets/styles/media-width.scss' as media-width;
 @use '@/assets/styles/small-header.scss' as small-header;
 @use '@/assets/styles/big-header.scss' as big-header;
-@use '@/assets/styles/svg-logo.scss' as svg-logo;
 
 $big-header-logo-svg-size: 2rem;
 $big-header-logo-clr: black;
@@ -89,9 +88,8 @@ $big-header-logo-clr-hover: white;
 }
 
 .big-header-logo-svg {
-  @include svg-logo.font-size($big-header-logo-svg-size);
-
-  & > *:not(rect) {
+  :deep(text) {
+    font-size: $big-header-logo-svg-size;
     fill: $big-header-logo-clr;
   }
 }

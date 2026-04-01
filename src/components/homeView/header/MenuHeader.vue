@@ -35,7 +35,6 @@ const { changeMenuState } = menuCloseStore
 <style scoped lang="scss">
 @use '@/assets/styles/menu-header.scss' as menu-header;
 @use '@/assets/styles/media-width.scss' as media-width;
-@use '@/assets/styles/svg-logo.scss' as svg-logo;
 
 $menu-bg-clr-active: rgba(0, 0, 0, 0.5);
 $logo-size: 2rem;
@@ -67,8 +66,14 @@ $logo-clr-hover: black;
 }
 
 .logo-svg {
-  @include svg-logo.font-size($logo-size);
-  @include svg-logo.origin-and-hover-clr($logo-clr, $logo-clr-hover);
+  :deep(text) {
+    font-size: $logo-size;
+    fill: $logo-clr;
+
+    &:hover {
+      fill: $logo-clr-hover;
+    }
+  }
 
   max-width: 12rem;
 }

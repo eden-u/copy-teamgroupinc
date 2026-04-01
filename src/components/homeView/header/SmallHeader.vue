@@ -65,7 +65,6 @@ const { renderCurDownSelectorTextStyle, openDownSelector, closeDownSelector } = 
 <style scoped lang="scss">
 @use '@/assets/styles/text-clr-hover.scss' as text-clr-hover;
 @use '@/assets/styles/small-header.scss' as small-header;
-@use '@/assets/styles/svg-logo.scss' as svg-logo;
 
 $small-header-logo-svg-size: 2rem;
 
@@ -119,9 +118,8 @@ $small-header-logo-svg-size: 2rem;
 }
 
 .small-header-logo-svg {
-  @include svg-logo.font-size($small-header-logo-svg-size);
-
-  *:not(rect) {
+  :deep(text) {
+    font-size: $small-header-logo-svg-size;
     fill: small-header.$item-text-clr;
   }
 }
@@ -174,7 +172,7 @@ $small-header-logo-svg-size: 2rem;
     }
   }
 
-  & > *:not(:first-child)::before {
+  & > * + *::before {
     content: '';
     display: block;
     background-color: small-header.$divider-clr;
