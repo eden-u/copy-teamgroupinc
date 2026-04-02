@@ -1,12 +1,15 @@
-function palyAnime(el, timeline, animeOption) {
-  el.animate(timeline, animeOption)
+function palyAnime(el, anime, animeOption) {
+  el.animate(anime, animeOption)
 }
 
-function stopAllAnime(el, originPathStyle) {
+function stopAllAnime(el, animePathStyle) {
   el.getAnimations().forEach((anime) => {
     anime.cancel()
-    el.style = originPathStyle
   })
+
+  for (const prop in animePathStyle) {
+    el.style[prop] = animePathStyle[prop]
+  }
 }
 
 export { palyAnime, stopAllAnime }

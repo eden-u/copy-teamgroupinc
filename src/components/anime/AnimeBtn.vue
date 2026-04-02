@@ -18,8 +18,6 @@ const { svgWidth, svgHeight } = svgData
 
 const svgViewBox = getViewBox(svgWidth, svgHeight)
 const pathDirection = getPathDirection(svgData)
-
-const originAnimePathStyle = { strokeDashoffset: 0, ...animePathStyle }
 // #endregion count path data
 
 // #region use anime
@@ -29,13 +27,13 @@ watch(
   () => playState,
   () => {
     if (playState) {
-      stopAllAnime(animePathElRef.value, originAnimePathStyle)
+      stopAllAnime(animePathElRef.value, animePathStyle)
 
       animeList.forEach((anime, animeIndex) => {
         palyAnime(animePathElRef.value, anime, animeOptionList[animeIndex])
       })
     } else {
-      stopAllAnime(animePathElRef.value, originAnimePathStyle)
+      stopAllAnime(animePathElRef.value, animePathStyle)
     }
   },
 )

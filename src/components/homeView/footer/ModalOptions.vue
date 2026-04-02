@@ -23,8 +23,8 @@ const pathMargin = 1
 const clipWeight = 10
 const animePathStyle = {
   strokeWidth: '1px',
-  strokeDasharray: pathStrokeDash,
-  strokeDashoffset: 0,
+  strokeDasharray: `${pathStrokeDash}`,
+  strokeDashoffset: '0',
   stroke: 'black',
   fill: 'rgb(255, 137, 137)',
 }
@@ -36,9 +36,9 @@ const secondAnimeStyle = { fill: 'white' }
 const animeTime = 500
 
 const firstAnime = [
-  { strokeDashoffset: 0 },
+  { strokeDashoffset: '0' },
   {
-    strokeDashoffset: -pathStrokeDash,
+    strokeDashoffset: `${-pathStrokeDash}`,
     ...firstAnimeStyle,
   },
 ]
@@ -50,9 +50,9 @@ const firstAnimeOption = {
 }
 
 const secondAnime = [
-  { strokeDashoffset: -pathStrokeDash },
-  { strokeDashoffset: -pathStrokeDash * 2 },
-  { strokeDashoffset: -pathStrokeDash * 2, ...secondAnimeStyle },
+  { strokeDashoffset: `${-pathStrokeDash}` },
+  { strokeDashoffset: `${-pathStrokeDash * 2}` },
+  { strokeDashoffset: `${-pathStrokeDash * 2}`, ...secondAnimeStyle },
 ]
 
 const secondAnimeOption = {
