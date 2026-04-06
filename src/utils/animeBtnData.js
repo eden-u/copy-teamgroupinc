@@ -1,10 +1,4 @@
-function getSvgSize(svgWidth, svgHeight) {
-  return {
-    svgWidth,
-    svgHeight,
-  }
-}
-
+// #region helper
 function getViewBox(svgWidth, svgHeight) {
   return `0 0 ${svgWidth} ${svgHeight}`
 }
@@ -13,7 +7,9 @@ function getClipLen(svgWidth, clipWeight) {
   return Math.ceil((svgWidth * clipWeight) / 100)
 }
 
-function getPathDirection({ svgWidth, svgHeight, pathMargin, clipLen }) {
+function getPathDirection({ svgWidth, svgHeight, pathMargin, clipWeight }) {
+  const clipLen = getClipLen(svgWidth, clipWeight)
+
   return `
     M${pathMargin + clipLen} ${pathMargin}
     L${svgWidth - pathMargin} ${pathMargin}
@@ -25,10 +21,27 @@ function getPathDirection({ svgWidth, svgHeight, pathMargin, clipLen }) {
   `
 }
 
-function getPathStrokeClipLen({ svgWidth, svgHeight, pathMargin, clipLen }) {
+function getPathStrokeDash({ svgWidth, svgHeight, pathMargin, clipWeight }) {
+  const clipLen = getClipLen(svgWidth, clipWeight)
+
   return Math.ceil(
     (svgWidth + svgHeight - (pathMargin * 4 + clipLen * 2) + Math.sqrt(2) * clipLen) * 2,
   )
 }
+// #endregion helper
 
-export { getSvgSize, getViewBox, getClipLen, getPathDirection, getPathStrokeClipLen }
+function getCalculatedSvgData(svgData) {
+  const { svgWidth, svgHeight } = svgData
+
+  const svgViewBox = getViewBox(svgWidth, svgHeight)
+  const pathDirection = getPathDirection(svgData)
+  const pathStrokeDash = getPathStrokeDash(svgData)
+
+  return {
+    svgViewBox,
+    pathStrokeDash,
+    pathDirection,
+  }
+}
+
+export { getCalculatedSvgData }

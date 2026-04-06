@@ -1,86 +1,27 @@
 <script setup>
-import { getClipLen, getPathStrokeClipLen, getSvgSize } from '@/utils/animeBtnData'
-import { checkPalyState, enterAnimeBtn, leaveAnimeBtn } from '@/modules/animeBtn'
-import AnimeBtn from '@/components/anime/AnimeBtn.vue'
-
-// #region get stroke dash
-const { svgWidth, svgHeight } = getSvgSize(150, 40)
-const clipLen = getClipLen(svgWidth, clipWeight)
-const svgData = {
-  svgWidth,
-  svgHeight,
-  pathMargin,
-  clipLen,
-}
-
-const pathStrokeDash = getPathStrokeClipLen(svgData)
-// #endregion get stroke dash
+import { getCalculatedSvgData } from '@/utils/animeBtnData'
 
 // #region set anime btn
-const pathMargin = 1
-const clipWeight = 5
-const animePathStyle = {
-  strokeWidth: '1px',
-  strokeDasharray: pathStrokeDash,
-  strokeDashoffset: 0,
-  stroke: 'black',
-  fill: 'none',
-}
-// #endregion set anime btn
-
-// #region set path anime
-const firstAnimeStyle = { stroke: 'white' }
-
-const animeTime = 500
-
-const firstAnime = [
-  { strokeDashoffset: 0 },
-  {
-    strokeDashoffset: -pathStrokeDash,
-    ...firstAnimeStyle,
-  },
-]
-
-const firstAnimeOption = {
-  duration: animeTime,
-  easing: 'ease',
-  fill: 'forwards',
+const svgData = {
+  svgWidth: 150,
+  svgHeight: 40,
+  pathMargin: 1,
+  clipWeight: 5,
 }
 
-const secondAnime = [
-  { strokeDashoffset: -pathStrokeDash },
-  { strokeDashoffset: -pathStrokeDash * 2 },
-]
-
-const secondAnimeOption = {
-  duration: animeTime,
-  easing: 'ease',
-  fill: 'forwards',
-  delay: animeTime,
-}
-// #endregion set path anime
+const { svgViewBox, pathStrokeDash, pathDirection } = getCalculatedSvgData(svgData)
 </script>
 
 <template>
   <div class="anime-btns">
-    <a
-      class="anime-btn"
-      @pointerenter="enterAnimeBtn(animeBtnIndex)"
-      @pointerleave="leaveAnimeBtn"
-      href=""
-      v-for="animeBtnIndex in 2"
-      :key="`anime-btn-${animeBtnIndex}`"
-    >
-      <AnimeBtn
-        v-bind="{
-          svgData,
-          animePathStyle,
-          animeList: [firstAnime, secondAnime],
-          animeOptionList: [firstAnimeOption, secondAnimeOption],
-          playState: checkPalyState(animeBtnIndex),
-        }"
-      />
-
+    <a class="anime-btn-box" href="" v-for="animeBtnIndex in 2" :key="`anime-btn-${animeBtnIndex}`">
+      <svg :viewBox="svgViewBox">
+        <path
+          class="btn__line--anime"
+          v-bind="{ d: pathDirection }"
+          :style="{ ['--line-len']: pathStrokeDash }"
+        />
+      </svg>
       <p class="btn-text">Lorem, ipsum.</p>
     </a>
   </div>
@@ -89,16 +30,19 @@ const secondAnimeOption = {
 <style scoped lang="scss">
 @use '@/assets/styles/text-clr-hover.scss' as text-clr-hover;
 
+$btn-line-clr: black;
+$btn-line-clr-hover: white;
 $btn-text-clr: black;
 $btn-text-clr-hover: white;
-$btn-text-time: 1s; // const animeTime = 500
+$btn-anime-time: 0.5s;
+$btn-text-time: 0.5s;
 
 .anime-btns {
   display: flex;
   gap: 1.5rem;
 }
 
-.anime-btn {
+.anime-btn-box {
   display: grid;
   grid-template-areas: 'anime-btn';
   align-items: center;
@@ -110,11 +54,39 @@ $btn-text-time: 1s; // const animeTime = 500
   }
 }
 
+.btn__line--anime {
+  stroke-width: 1px;
+  stroke-dasharray: var(--line-len);
+  stroke-dashoffset: 0;
+  stroke: $btn-line-clr;
+  fill: none;
+}
+
+.anime-btn-box:hover .btn__line--anime {
+  animation:
+    run-1 $btn-anime-time ease forwards,
+    run-2 $btn-anime-time ease forwards $btn-anime-time;
+
+  @keyframes run-1 {
+    100% {
+      stroke-dashoffset: calc(var(--line-len) * -1px);
+      stroke: $btn-line-clr-hover;
+    }
+  }
+
+  @keyframes run-2 {
+    100% {
+      stroke-dashoffset: calc(var(--line-len) * -2px);
+      stroke: $btn-line-clr-hover;
+    }
+  }
+}
+
 .btn-text {
   color: $btn-text-clr;
 }
 
-.anime-btn:hover .btn-text {
+.anime-btn-box:hover .btn-text {
   color: $btn-text-clr-hover;
   transition: all $btn-text-time ease;
 }

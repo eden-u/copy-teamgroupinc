@@ -1,99 +1,32 @@
 <script setup>
-import { getClipLen, getPathStrokeClipLen, getSvgSize } from '@/utils/animeBtnData'
-import { checkPalyState, enterAnimeBtn, leaveAnimeBtn } from '@/modules/animeBtn'
-import { getMediaList } from '@/utils/mediaQuery'
-import { onMounted, ref } from 'vue'
-import AnimeBtn from '@/components/anime/AnimeBtn.vue'
+import { getCalculatedSvgData } from '@/utils/animeBtnData'
 
-// #region get stroke dash
-const { svgWidth, svgHeight } = getSvgSize(150, 40)
-const clipLen = getClipLen(svgWidth, clipWeight)
 const svgData = {
-  svgWidth,
-  svgHeight,
-  pathMargin,
-  clipLen,
+  svgWidth: 150,
+  svgHeight: 40,
+  pathMargin: 1,
+  clipWeight: 10,
 }
 
-const pathStrokeDash = getPathStrokeClipLen(svgData)
-// #endregion get stroke dash
-
-// #region set anime btn
-const pathMargin = 1
-const clipWeight = 10
-const animePathStyle = {
-  strokeWidth: '1px',
-  strokeDasharray: `${pathStrokeDash}`,
-  strokeDashoffset: '0',
-  stroke: 'black',
-  fill: 'rgb(255, 137, 137)',
-}
-// #endregion set anime btn
-
-// #region set path anime
-const firstAnimeStyle = { stroke: 'white' }
-const secondAnimeStyle = { fill: 'white' }
-const animeTime = 500
-
-const firstAnime = [
-  { strokeDashoffset: '0' },
-  {
-    strokeDashoffset: `${-pathStrokeDash}`,
-    ...firstAnimeStyle,
-  },
-]
-
-const firstAnimeOption = {
-  duration: animeTime,
-  easing: 'ease',
-  fill: 'forwards',
-}
-
-const secondAnime = [
-  { strokeDashoffset: `${-pathStrokeDash}` },
-  { strokeDashoffset: `${-pathStrokeDash * 2}` },
-  { strokeDashoffset: `${-pathStrokeDash * 2}`, ...secondAnimeStyle },
-]
-
-const secondAnimeOption = {
-  duration: animeTime * 2,
-  easing: 'ease',
-  fill: 'forwards',
-  delay: animeTime,
-}
-// #endregion set path anime
-
-// #region anime passport
-const animeBtnMediaList = getMediaList('screen and (min-width: 1024px)')
-const animePassportRef = ref(animeBtnMediaList.matches)
-
-onMounted(() => {
-  animeBtnMediaList.addEventListener('change', (e) => {
-    animePassportRef.value = e.matches
-  })
-})
-// #endregion anime passport
+const { svgViewBox, pathStrokeDash, pathDirection } = getCalculatedSvgData(svgData)
 </script>
 
 <template>
   <div class="options">
     <a
-      class="anime-btn"
-      @pointerenter="enterAnimeBtn(animeBtnIndex)"
-      @pointerleave="leaveAnimeBtn"
+      class="anime-btn-box"
       href=""
       v-for="animeBtnIndex in 10"
       :key="`anime-btn-${animeBtnIndex}`"
     >
-      <AnimeBtn
-        v-bind="{
-          svgData,
-          animePathStyle,
-          animeList: [firstAnime, secondAnime],
-          animeOptionList: [firstAnimeOption, secondAnimeOption],
-          playState: animePassportRef && checkPalyState(animeBtnIndex),
-        }"
-      />
+      <svg :viewBox="svgViewBox">
+        <path
+          class="btn__line--anime"
+          v-bind="{ d: pathDirection }"
+          :style="{ ['--line-len']: pathStrokeDash }"
+        />
+      </svg>
+
       <p class="btn-text">option{{ animeBtnIndex }}</p>
     </a>
   </div>
@@ -104,8 +37,13 @@ onMounted(() => {
 
 $btn-text-clr: #9d4edd;
 $btn-text-clr-hover: black;
-$btn-text-time: 0.5s;
+$btn-anime-time: 0.5s;
 $btn-delay-time: 0.75s; // const animeTime = 500 * 2
+
+$btn-line-clr: black;
+$btn-line-clr-hover: white;
+$btn-line-bg: rgba(255, 255, 255, 0);
+$btn-line-bg-hover: white;
 
 .options {
   display: flex;
@@ -116,25 +54,67 @@ $btn-delay-time: 0.75s; // const animeTime = 500 * 2
   overflow: auto;
 }
 
-.anime-btn {
+// #region anime btn
+.anime-btn-box {
+  width: min(16rem, 100%);
   display: grid;
   grid-template-areas: 'anime-btn';
   align-items: center;
-  width: min(16rem, 100%);
 
   & > * {
     grid-area: anime-btn;
   }
 }
 
+.btn__line--anime {
+  stroke-width: 1px;
+  stroke-dasharray: var(--line-len);
+  stroke-dashoffset: 0;
+  stroke: $btn-line-clr;
+  fill: $btn-line-bg;
+}
+
 .btn-text {
   color: $btn-text-clr;
 }
+// #endregion anime btn
 
 @media screen and (min-width: media-width.$width-1024) {
-  .anime-btn:hover .btn-text {
+  .anime-btn-box:hover .btn__line--anime {
+    animation:
+      run-1 $btn-anime-time ease forwards,
+      run-2 $btn-anime-time ease forwards $btn-anime-time;
+
+    @keyframes run-1 {
+      100% {
+        stroke-dashoffset: calc(var(--line-len) * -1px);
+        stroke: $btn-line-clr-hover;
+      }
+    }
+
+    @keyframes run-2 {
+      0% {
+        stroke-dashoffset: calc(var(--line-len) * -1px);
+        stroke: $btn-line-clr-hover;
+      }
+
+      50% {
+        stroke-dashoffset: calc(var(--line-len) * -2px);
+        stroke: $btn-line-clr-hover;
+        fill: $btn-line-bg;
+      }
+
+      100% {
+        stroke-dashoffset: calc(var(--line-len) * -2px);
+        stroke: $btn-line-clr-hover;
+        fill: $btn-line-bg-hover;
+      }
+    }
+  }
+
+  .anime-btn-box:hover .btn-text {
     color: $btn-text-clr-hover;
-    transition: all $btn-text-time ease $btn-delay-time;
+    transition: all $btn-anime-time ease $btn-delay-time;
   }
 }
 </style>

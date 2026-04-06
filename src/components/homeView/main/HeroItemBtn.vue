@@ -1,101 +1,38 @@
 <script setup>
-import AnimeBtn from '@/components/anime/AnimeBtn.vue'
-import { getClipLen, getPathStrokeClipLen, getSvgSize } from '@/utils/animeBtnData'
-import { getMediaList } from '@/utils/mediaQuery'
-import { onMounted, ref } from 'vue'
-import { checkPalyState, enterAnimeBtn, leaveAnimeBtn } from '@/modules/animeBtn'
+import { getCalculatedSvgData } from '@/utils/animeBtnData'
 
-// #region get stroke dash
-const { svgWidth, svgHeight } = getSvgSize(100, 35)
-const clipLen = getClipLen(svgWidth, clipWeight)
 const svgData = {
-  svgWidth,
-  svgHeight,
-  pathMargin,
-  clipLen,
+  svgWidth: 100,
+  svgHeight: 35,
+  pathMargin: 1,
+  clipWeight: 20,
 }
 
-const pathStrokeDash = getPathStrokeClipLen(svgData)
-// #endregion get stroke dash
-
-// #region set anime btn
-const pathMargin = 1
-const clipWeight = 20
-const bgPathStyle = {
-  strokeWidth: '1px',
-  strokeDasharray: pathStrokeDash,
-  strokeDashoffset: 0,
-  stroke: 'white',
-  fill: 'none',
-}
-
-const animePathStyle = {
-  strokeWidth: '1px',
-  strokeDasharray: `${pathStrokeDash} ${pathStrokeDash}`,
-  strokeDashoffset: pathStrokeDash,
-  stroke: 'black',
-  fill: 'none',
-}
-
-// #endregion set anime btn
-
-// #region set anime
-const firstAnimeStyle = { stroke: 'black' }
-const animeTime = 500
-
-const firstAnime = [
-  { strokeDashoffset: pathStrokeDash },
-  {
-    strokeDashoffset: 0,
-    ...firstAnimeStyle,
-  },
-]
-
-const firstAnimeOption = {
-  duration: animeTime,
-  easing: 'ease',
-  fill: 'forwards',
-}
-// #endregion set anime
-
-// #region anime passport
-const animeBtnMediaList = getMediaList('screen and (min-width: 1024px)')
-const animePassportRef = ref(animeBtnMediaList.matches)
-
-onMounted(() => {
-  animeBtnMediaList.addEventListener('change', (e) => {
-    animePassportRef.value = e.matches
-  })
-})
-// #endregion anime passport
+const { svgViewBox, pathStrokeDash, pathDirection } = getCalculatedSvgData(svgData)
 </script>
 
 <template>
-  <a @pointerenter="enterAnimeBtn('play anime')" @pointerleave="leaveAnimeBtn" href="">
-    <AnimeBtn
-      v-bind="{
-        svgData,
-        bgPathStyle,
-        animePathStyle,
-        animeList: [firstAnime],
-        animeOptionList: [firstAnimeOption],
-        playState: animePassportRef && checkPalyState('play anime'),
-        hasBgPath: true,
-      }"
-    />
+  <a class="anime-btn-box" href="">
+    <svg :viewBox="svgViewBox" :style="{ ['--line-len']: pathStrokeDash }">
+      <path class="btn__line-1" v-bind="{ d: pathDirection }" />
+
+      <path class="btn__line-2--anime" v-bind="{ d: pathDirection }" />
+    </svg>
+
     <p>Lorem.</p>
   </a>
 </template>
 <style scoped lang="scss">
 @use '@/assets/styles/media-width.scss' as media-width;
 
+$btn-line-1-clr: white;
+$btn-line-2-clr: black;
 $text-clr: white;
 $text-clr-active: black;
 $link-size: 1rem;
-$tranition-item: 0.5s;
+$btn-anime-item: 0.5s;
 
-// #region link and anime btn
-a {
+.anime-btn-box {
   display: grid;
   grid-template-areas: 'anime-btn';
   align-items: center;
@@ -113,38 +50,57 @@ a {
   }
 }
 
-// #endregion link and anime btn
+// #region svg path
+.btn__line-1,
+.btn__line-2--anime {
+  stroke-width: 1px;
+  fill: none;
+}
+
+.btn__line-1 {
+  stroke-dasharray: var(--line-len);
+  stroke-dashoffset: 0;
+  stroke: $btn-line-1-clr;
+}
+
+.btn__line-2--anime {
+  display: none;
+  stroke-dasharray: var(--line-len) var(--line-len);
+  stroke-dashoffset: var(--line-len);
+  stroke: $btn-line-2-clr;
+}
+// #endregion svg path
 
 @media screen and (min-width: media-width.$width-1024) {
-  a {
+  .anime-btn-box {
     opacity: 0;
     transform: translateY(1rem);
   }
 
-  .grow-up a {
+  .grow-up .anime-btn-box {
     opacity: 1;
     transform: translateY(0);
     transition:
-      opacity 0.5s ease $tranition-item,
-      transform 0.5s ease $tranition-item,
+      opacity 0.5s ease $btn-anime-item,
+      transform 0.5s ease $btn-anime-item,
       color 0.3s ease;
 
     &:hover {
       transition:
-        opacity 0.5s ease $tranition-item,
-        transform 0.5s ease $tranition-item,
-        color 0.5s ease $tranition-item;
+        opacity 0.5s ease $btn-anime-item,
+        transform 0.5s ease $btn-anime-item,
+        color 0.5s ease $btn-anime-item;
     }
   }
-}
 
-@media screen and (max-width: media-width.$width-1023) {
-  a {
-    transition: color 0.3s ease;
+  .anime-btn-box:hover .btn__line-2--anime {
+    stroke-dashoffset: 0;
+  }
 
-    &:hover {
-      transition: color 0.5s ease $tranition-item;
-    }
+  .btn__line-2--anime {
+    display: inline;
+    stroke-dashoffset: calc(var(--line-len));
+    transition: all $btn-anime-item ease;
   }
 }
 </style>

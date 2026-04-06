@@ -1,24 +1,9 @@
 <script setup>
-import { getClipLen, getPathDirection, getViewBox } from '@/utils/animeBtnData'
+import { getCalculatedSvgData } from '@/utils/animeBtnData'
 
-const { svgSize, gradientClrMap, pathMargin, clipWeight } = defineProps([
-  'svgSize',
-  'gradientClrMap',
-  'pathMargin',
-  'clipWeight',
-])
+const { svgData, gradientClrMap } = defineProps(['svgData', 'gradientClrMap'])
 
-const { svgWidth, svgHeight } = svgSize
-const svgViewBox = getViewBox(svgWidth, svgHeight)
-const clipLen = getClipLen(svgWidth, clipWeight)
-
-const pathDirection = getPathDirection({
-  svgWidth,
-  svgHeight,
-  pathMargin,
-  clipLen,
-})
-
+const { svgViewBox, pathDirection } = getCalculatedSvgData(svgData)
 const { stopClr1, stopClr2, stopClr3 } = gradientClrMap
 </script>
 

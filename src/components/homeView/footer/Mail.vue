@@ -2,9 +2,13 @@
 import AnimeBtnGradientBg from '@/components/anime/AnimeBtnGradientBg.vue'
 import IconEmailClose from '@/components/icons/footer/IconEmailClose.vue'
 import IconEmailOpen from '@/components/icons/footer/IconEmailOpen.vue'
-import { getSvgSize } from '@/utils/animeBtnData'
 
-const svgSize = getSvgSize(350, 100)
+const svgData = {
+  svgWidth: 350,
+  svgHeight: 100,
+  pathMargin: 0,
+  clipWeight: 10,
+}
 
 const gradientClrMap = {
   stopClr1: 'rgb(255, 137, 137)',
@@ -29,10 +33,7 @@ const gradientClrMap = {
         <input type="email" placeholder="Email" />
 
         <button class="btn-box" type="button">
-          <AnimeBtnGradientBg
-            class="btn-bg"
-            v-bind="{ svgSize, gradientClrMap, pathMargin: 0, clipWeight: 10 }"
-          />
+          <AnimeBtnGradientBg class="btn-bg" v-bind="{ svgData, gradientClrMap }" />
 
           <p>Lorem.</p>
         </button>
